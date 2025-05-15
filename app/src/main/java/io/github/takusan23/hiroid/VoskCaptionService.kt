@@ -3,6 +3,21 @@ package io.github.takusan23.hiroid
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.graphics.PixelFormat
+import android.view.WindowManager
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -11,12 +26,83 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import io.github.takusan23.hiroid.ui.theme.HiroidTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class VoskCaptionService : LifecycleService() {
+class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
+
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
+
+    private val windowManager by lazy { getSystemService(Context.WINDOW_SERVICE) as WindowManager }
+
+    private val voskResultCaptionState = mutableStateOf(emptyList<VoskAndroid.VoskResult>())
+    private val composeView by lazy {
+        ComposeView(this).apply {
+            setContent {
+                HiroidTheme {
+                    LazyColumn(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .size(300.dp)
+                            .pointerInput(key1 = Unit) {
+                                detectDragGestures { change, dragAmount ->
+                                    change.consume()
+                                    params.x += dragAmount.x.toInt()
+                                    params.y += dragAmount.y.toInt()
+                                    windowManager.updateViewLayout(this@apply, params)
+                                }
+                            }
+                    ) {
+                        // 表示する
+                        items(voskResultCaptionState.value) { result ->
+                            Text(
+                                text = when (result) {
+                                    is VoskAndroid.VoskResult.Partial -> result.partial
+                                    is VoskAndroid.VoskResult.Result -> result.text
+                                },
+                                color = when (result) {
+                                    is VoskAndroid.VoskResult.Partial -> MaterialTheme.colorScheme.error
+                                    is VoskAndroid.VoskResult.Result -> MaterialTheme.colorScheme.primary
+                                }
+                            )
+                            HorizontalDivider()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private val params = WindowManager.LayoutParams(
+        WindowManager.LayoutParams.WRAP_CONTENT,
+        WindowManager.LayoutParams.WRAP_CONTENT,
+        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+        PixelFormat.TRANSLUCENT
+    )
+
+    override fun onCreate() {
+        super.onCreate()
+        composeView.setViewTreeLifecycleOwner(this)
+        composeView.setViewTreeSavedStateRegistryOwner(this)
+        savedStateRegistryController.performRestore(null)
+        windowManager.addView(composeView, params)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        windowManager.removeView(composeView)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -52,8 +138,11 @@ class VoskCaptionService : LifecycleService() {
                             )
                             .conflate()
                             .collect { pcm ->
+                                // 文字起こし
                                 val result = voskAndroid.recognizeFromSpeechPcm(pcm) ?: return@collect
-                                println(result)
+                                // 配列に足す
+                                // Partial は配列に一個あれば良い
+                                voskResultCaptionState.value = listOf(result) + voskResultCaptionState.value.filterIsInstance<VoskAndroid.VoskResult.Result>()
                             }
                     }
                 } finally {

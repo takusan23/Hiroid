@@ -1,10 +1,12 @@
 package io.github.takusan23.hiroid
 
 import android.content.Context
+import android.content.Intent
 import android.media.projection.MediaProjectionConfig
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -82,6 +84,9 @@ private fun MainScreen() {
             Button(onClick = {
                 VoskCaptionService.stopService(context)
             }) { Text("終了") }
+            Button(onClick = {
+                context.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+            }) { Text("オーバーレイ権限の設定画面") }
         }
     }
 }
