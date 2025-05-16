@@ -13,7 +13,7 @@ import io.github.takusan23.hiroid.tool.VoskModelTool
 enum class Route(val path: String) {
     Home("home"),
     Setup("setup"),
-    Setting("setting")
+    License("license")
 }
 
 /** この中でルーティングする */
@@ -38,15 +38,17 @@ fun MainScreen() {
         startDestination = "home"
     ) {
         composable(Route.Home.path) {
-            HomeScreen()
+            HomeScreen(
+                onNavigate = { route -> navController.navigate(route = route.path) }
+            )
         }
         composable(Route.Setup.path) {
             SetupScreen(
                 onComplete = { navController.navigate(route = Route.Home.path) }
             )
         }
-        composable(Route.Setting.path) {
-            SettingScreen()
+        composable(Route.License.path) {
+            LicenseScreen()
         }
     }
 }

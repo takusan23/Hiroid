@@ -1,6 +1,7 @@
 package io.github.takusan23.hiroid.ui.screen
 
 import android.content.Context
+import android.content.Intent
 import android.media.projection.MediaProjectionConfig
 import android.media.projection.MediaProjectionManager
 import android.os.Build
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import io.github.takusan23.hiroid.R
 import io.github.takusan23.hiroid.VoskCaptionService
 import io.github.takusan23.hiroid.tool.VoskModelTool
@@ -36,9 +38,11 @@ import io.github.takusan23.hiroid.ui.component.MenuItem
 import io.github.takusan23.hiroid.ui.component.ModelSelectBottomSheet
 import kotlinx.coroutines.launch
 
+private val GitHubUrl = "https://github.com/takusan23/Hiroid"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onNavigate: (Route) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -141,13 +145,13 @@ fun HomeScreen() {
                         title = "ライセンス",
                         description = "thx",
                         iconResId = R.drawable.data_object_24px,
-                        onClick = { }
+                        onClick = { onNavigate(Route.License) }
                     )
                     MenuItem(
                         title = "ソースコードを見る",
                         description = "GitHub から見ることが出来ます",
                         iconResId = R.drawable.open_in_browser_24px,
-                        onClick = { }
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, GitHubUrl.toUri())) }
                     )
                 }
             }
