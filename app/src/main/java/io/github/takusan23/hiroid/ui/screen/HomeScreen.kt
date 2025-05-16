@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.projection.MediaProjectionConfig
 import android.media.projection.MediaProjectionManager
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -28,16 +30,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.takusan23.hiroid.R
 import io.github.takusan23.hiroid.VoskCaptionService
+import io.github.takusan23.hiroid.tool.VoskModelTool
 import io.github.takusan23.hiroid.ui.component.MenuContainer
 import io.github.takusan23.hiroid.ui.component.MenuItem
+import io.github.takusan23.hiroid.ui.component.ModelSelectBottomSheet
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     val context = LocalContext.current
-    val isServiceRunning = remember { mutableStateOf(VoskCaptionService.isServiceRunning(context)) }
+    val scope = rememberCoroutineScope()
 
     // MediaProjection
+    val isServiceRunning = remember { mutableStateOf(VoskCaptionService.isServiceRunning(context)) }
     val mediaProjectionManager = remember { context.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager }
     val mediaProjectionRequest = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -49,6 +55,30 @@ fun HomeScreen() {
             )
         }
     )
+
+    // モデル追加
+    val filePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument(),
+        onResult = { uri ->
+            uri ?: return@rememberLauncherForActivityResult
+            scope.launch {
+                VoskModelTool.addVoskModel(
+                    context = context,
+                    inputStream = context.contentResolver.openInputStream(uri)!!
+                )
+                Toast.makeText(context, "追加しました", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    // モデル選択ボトムシート
+    val isShowModelBottomSheet = remember { mutableStateOf(false) }
+    if (isShowModelBottomSheet.value) {
+        ModelSelectBottomSheet(
+            onClose = { isShowModelBottomSheet.value = false }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = stringResource(R.string.app_name)) })
@@ -89,13 +119,13 @@ fun HomeScreen() {
                         title = "モデルを追加する",
                         description = "他のモデルをダウンロードして追加できます",
                         iconResId = R.drawable.language_24px,
-                        onClick = { }
+                        onClick = { filePicker.launch(arrayOf("application/zip")) }
                     )
                     MenuItem(
                         title = "モデルを変更する",
                         description = "追加したモデルを切り替えます",
                         iconResId = R.drawable.language_24px,
-                        onClick = { }
+                        onClick = { isShowModelBottomSheet.value = true }
                     )
                 }
             }
