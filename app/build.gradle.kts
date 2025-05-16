@@ -41,7 +41,10 @@ dependencies {
     // Vosk
     implementation("net.java.dev.jna:jna:5.15.0@aar")
     implementation("com.alphacephei:vosk-android:0.3.47@aar")
-    implementation("androidx.lifecycle:lifecycle-service:2.9.0")
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.service)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
