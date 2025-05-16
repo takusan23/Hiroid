@@ -8,17 +8,36 @@ import android.graphics.PixelFormat
 import android.view.WindowManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -37,6 +56,7 @@ import io.github.takusan23.hiroid.tool.VoskModelTool
 import io.github.takusan23.hiroid.tool.dataStore
 import io.github.takusan23.hiroid.ui.theme.HiroidTheme
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -50,15 +70,15 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
 
     private val windowManager by lazy { getSystemService(Context.WINDOW_SERVICE) as WindowManager }
 
-    private val voskResultCaptionState = mutableStateOf(emptyList<VoskAndroid.VoskResult>())
+    private val voskResultList = mutableStateOf(emptyList<VoskAndroid.VoskResult>())
     private val composeView by lazy {
         ComposeView(this).apply {
             setContent {
                 HiroidTheme {
-                    LazyColumn(
+                    Column(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primaryContainer)
-                            .size(300.dp)
+                            .width(400.dp)
+                            .height(200.dp)
                             .pointerInput(key1 = Unit) {
                                 detectDragGestures { change, dragAmount ->
                                     change.consume()
@@ -67,20 +87,69 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
                                     windowManager.updateViewLayout(this@apply, params)
                                 }
                             }
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(MaterialTheme.colorScheme.primaryContainer)
                     ) {
-                        // 表示する
-                        items(voskResultCaptionState.value) { result ->
-                            Text(
-                                text = when (result) {
-                                    is VoskAndroid.VoskResult.Partial -> result.partial
-                                    is VoskAndroid.VoskResult.Result -> result.text
-                                },
-                                color = when (result) {
-                                    is VoskAndroid.VoskResult.Partial -> MaterialTheme.colorScheme.error
-                                    is VoskAndroid.VoskResult.Result -> MaterialTheme.colorScheme.primary
+
+                        val state = rememberLazyListState()
+                        LaunchedEffect(key1 = Unit) {
+                            // 一番下にスクロールしている場合は true になる Flow
+                            snapshotFlow { state.layoutInfo.visibleItemsInfo.lastOrNull()?.index == (voskResultList.value.size - 1) }.collectLatest { isBottom ->
+                                if (!isBottom) return@collectLatest
+                                // 常に下にスクロールする
+                                snapshotFlow { voskResultList.value }.collectLatest {
+                                    state.animateScrollToItem(index = it.size)
                                 }
+                            }
+                        }
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                modifier = Modifier.size(48.dp),
+                                painter = painterResource(R.drawable.ic_launcher_foreground),
+                                contentDescription = null
                             )
-                            HorizontalDivider()
+                            Box(
+                                modifier = Modifier.weight(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(5.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primary)
+                                )
+                            }
+                            IconButton(onClick = { stopSelf() }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.close_24px),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+
+                        LazyColumn(
+                            state = state,
+                            contentPadding = PaddingValues(10.dp)
+                        ) {
+                            itemsIndexed(voskResultList.value) { index, text ->
+                                if (index != 0) {
+                                    HorizontalDivider()
+                                }
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = when (text) {
+                                        is VoskAndroid.VoskResult.Partial -> text.partial
+                                        is VoskAndroid.VoskResult.Result -> text.text
+                                    },
+                                    color = when (text) {
+                                        is VoskAndroid.VoskResult.Partial -> Color.Red
+                                        is VoskAndroid.VoskResult.Result -> Color.Unspecified
+                                    },
+                                    fontSize = 14.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -148,7 +217,7 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
                                 val result = voskAndroid.recognizeFromSpeechPcm(pcm) ?: return@collect
                                 // 配列に足す
                                 // Partial は配列に一個あれば良い
-                                voskResultCaptionState.value = listOf(result) + voskResultCaptionState.value.filterIsInstance<VoskAndroid.VoskResult.Result>()
+                                voskResultList.value = voskResultList.value.filterIsInstance<VoskAndroid.VoskResult.Result>() + result
                             }
                     }
                 } finally {
