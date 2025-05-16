@@ -42,6 +42,7 @@ dependencies {
     implementation("net.java.dev.jna:jna:5.15.0@aar")
     implementation("com.alphacephei:vosk-android:0.3.47@aar")
 
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.androidx.lifecycle.viewmodel.compose)

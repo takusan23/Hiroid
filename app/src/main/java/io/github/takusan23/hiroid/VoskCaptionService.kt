@@ -32,9 +32,13 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import io.github.takusan23.hiroid.tool.DataStoreKey
+import io.github.takusan23.hiroid.tool.VoskModelTool
+import io.github.takusan23.hiroid.tool.dataStore
 import io.github.takusan23.hiroid.ui.theme.HiroidTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -126,8 +130,9 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
         if (intent != null) {
             lifecycleScope.launch {
                 // モデルを指定して Vosk
-                val modelPath = getExternalFilesDir(null)!!.resolve("vosk-model-small-ja-0.22")
-                val voskAndroid = VoskAndroid(modelPath.path).apply { prepare() }
+                // 指定があればそれ、ないなら一番最初のモデル
+                val modelPath = dataStore.data.first()[DataStoreKey.MODEL_FILE_PATH] ?: VoskModelTool.getVoskModelList(this@VoskCaptionService).first().path
+                val voskAndroid = VoskAndroid(modelPath).apply { prepare() }
 
                 try {
                     withContext(Dispatchers.Default) {
