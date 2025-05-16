@@ -144,6 +144,11 @@ private fun VoskModelCard(
             )
 
             OutlinedButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, ModelDownloadLink.toUri())) }) {
+                Icon(
+                    painter = painterResource(R.drawable.open_in_browser_24px),
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(text = "ブラウザを開く")
             }
             Button(onClick = { filePicker.launch(arrayOf("application/zip")) }) {

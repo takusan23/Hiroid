@@ -1,5 +1,6 @@
 package io.github.takusan23.hiroid
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -179,6 +180,19 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
         fun stopService(context: Context) {
             val intent = Intent(context, VoskCaptionService::class.java)
             context.stopService(intent)
+        }
+
+        /**
+         * サービスが起動中かどうか
+         * 非推奨だが代替案がない...
+         *
+         * @param context [Context]
+         * @return 起動中なら true
+         */
+        fun isServiceRunning(context: Context): Boolean {
+            return (context.getSystemService(ACTIVITY_SERVICE) as ActivityManager)
+                .getRunningServices(Integer.MAX_VALUE)
+                .any { it.service.className == VoskCaptionService::class.java.name }
         }
     }
 }
