@@ -121,6 +121,12 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
                                         .background(MaterialTheme.colorScheme.primary)
                                 )
                             }
+                            IconButton(onClick = { voskResultList.value = emptyList() }) {
+                                Icon(
+                                    painter = painterResource(R.drawable.delete_24px),
+                                    contentDescription = null
+                                )
+                            }
                             IconButton(onClick = { stopSelf() }) {
                                 Icon(
                                     painter = painterResource(R.drawable.close_24px),
