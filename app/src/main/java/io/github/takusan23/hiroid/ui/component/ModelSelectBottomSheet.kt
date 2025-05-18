@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.edit
@@ -69,7 +70,7 @@ fun ModelSelectBottomSheet(
             item {
                 Text(
                     modifier = Modifier.padding(10.dp),
-                    text = "モデルの選択",
+                    text = stringResource(R.string.model_select_bottomsheet_title),
                     fontSize = 24.sp
                 )
             }

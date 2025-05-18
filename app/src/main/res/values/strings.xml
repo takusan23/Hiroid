@@ -30,4 +30,5 @@
     <string name="vosk_caption_service_notification_channel_name">Transcription service running</string>
     <string name="vosk_caption_service_notification_title">Transcription service</string>
     <string name="vosk_caption_service_notification_description">Audio on the device is being collected and transcribed.</string>
+    <string name="model_select_bottomsheet_title">Model Selection</string>
 </resources>

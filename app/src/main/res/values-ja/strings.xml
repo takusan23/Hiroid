@@ -31,4 +31,5 @@
     <string name="vosk_caption_service_notification_channel_name">文字起こしサービス実行中</string>
     <string name="vosk_caption_service_notification_title">文字起こしサービス</string>
     <string name="vosk_caption_service_notification_description">端末内の音声を収集して、文字起こしをしています。</string>
+    <string name="model_select_bottomsheet_title">モデルの選択</string>
 </resources>
