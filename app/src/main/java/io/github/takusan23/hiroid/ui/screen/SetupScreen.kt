@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -53,7 +54,7 @@ fun SetupScreen(onComplete: () -> Unit) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "初期設定") })
+            TopAppBar(title = { Text(text = stringResource(R.string.setup_screen_title)) })
         }
     ) { innerPadding ->
         LazyColumn(contentPadding = innerPadding) {
@@ -88,7 +89,7 @@ fun SetupScreen(onComplete: () -> Unit) {
                         enabled = isAllPermissionGranted.value && isPreparedModel.value,
                         onClick = onComplete
                     ) {
-                        Text(text = "はじめる")
+                        Text(text = stringResource(R.string.setup_button_start))
                     }
                 }
             }
@@ -109,7 +110,7 @@ private fun VoskModelCard(
 
     // onComplete を呼ぶ
     LaunchedEffect(key1 = Unit) {
-        snapshotFlow { isPreparedModel.value }.first { it /* == true */ }
+        snapshotFlow { isPreparedModel.value }.first { it }
         onComplete()
     }
 
@@ -136,11 +137,11 @@ private fun VoskModelCard(
         ) {
 
             Text(
-                text = "音声認識のモデルをダウンロードしてください",
+                text = stringResource(R.string.setup_button_vosk_model_card_title),
                 fontSize = 20.sp
             )
             Text(
-                text = "ブラウザを開き、使いたい言語のモデルをダウンロードしてください。ダウンロードしたらボタンを押して、ダウンロードしたモデルの zip を選んでください。"
+                text = stringResource(R.string.setup_button_vosk_model_card_description)
             )
 
             OutlinedButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, ModelDownloadLink.toUri())) }) {
@@ -149,10 +150,10 @@ private fun VoskModelCard(
                     contentDescription = null
                 )
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = "ブラウザを開く")
+                Text(text = stringResource(R.string.setup_button_vosk_model_button_open_browser))
             }
             Button(onClick = { filePicker.launch(arrayOf("application/zip")) }) {
-                Text(text = "ダウンロードしたモデルを選ぶ")
+                Text(text = stringResource(R.string.setup_button_vosk_model_button_select_model))
             }
 
             if (isProgress.value) {
@@ -173,8 +174,8 @@ private fun PermissionCard(
 
     // onComplete を呼ぶ
     LaunchedEffect(key1 = Unit) {
-        snapshotFlow { isRecordGranted.value }.first { it /* == true */ }
-        snapshotFlow { isOverlayWindowGranted.value }.first { it /* == true */ }
+        snapshotFlow { isRecordGranted.value }.first { it }
+        snapshotFlow { isOverlayWindowGranted.value }.first { it }
         onComplete()
     }
 
@@ -194,11 +195,11 @@ private fun PermissionCard(
         ) {
 
             Text(
-                text = "必要な権限の付与",
+                text = stringResource(R.string.setup_screen_permission_card_title),
                 fontSize = 20.sp
             )
             Text(
-                text = "このアプリでは、端末内で再生されている音声の取得のために、録音権限が必要です。また、画面の上に字幕を表示するため、オーバーレイ権限も必要です。"
+                text = stringResource(R.string.setup_button_permission_card_description)
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -211,7 +212,7 @@ private fun PermissionCard(
                 }
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Button(onClick = { permissionRequest.launch(android.Manifest.permission.RECORD_AUDIO) }) {
-                    Text(text = "録音権限の取得")
+                    Text(text = stringResource(R.string.setup_button_permission_button_record))
                 }
             }
 
@@ -225,10 +226,9 @@ private fun PermissionCard(
                 }
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Button(onClick = { overlaySetting.launch(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)) }) {
-                    Text(text = "オーバーレイ権限")
+                    Text(text = stringResource(R.string.setup_button_permission_button_overlay))
                 }
             }
         }
     }
 }
-

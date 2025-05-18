@@ -12,15 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.takusan23.hiroid.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LicenseScreen() {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "ライセンス") })
+            TopAppBar(title = { Text(text = stringResource(R.string.lisence_screen_title)) })
         }
     ) { innerPadding ->
         LazyColumn(contentPadding = innerPadding) {

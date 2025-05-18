@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ひろいど</string>
+    <string name="setup_screen_title">初期設定</string>
+    <string name="setup_button_start">はじめる</string>
+    <string name="setup_button_vosk_model_card_title">音声認識のモデルをダウンロードしてください</string>
+    <string name="setup_button_vosk_model_card_description">ブラウザを開き、使いたい言語のモデルをダウンロードしてください。ダウンロードしたらボタンを押して、ダウンロードしたモデルの zip を選んでください。</string>
+    <string name="setup_button_vosk_model_button_open_browser">ブラウザを開く</string>
+    <string name="setup_button_vosk_model_button_select_model">ダウンロードしたモデルを選ぶ</string>
+    <string name="setup_screen_permission_card_title">必要な権限の付与</string>
+    <string name="setup_button_permission_card_description">このアプリでは、端末内で再生されている音声の取得のために、録音権限が必要です。また、画面の上に字幕を表示するため、オーバーレイ権限も必要です。</string>
+    <string name="setup_button_permission_button_record">録音権限の取得</string>
+    <string name="setup_button_permission_button_overlay">オーバーレイ権限</string>
+    <string name="home_screen_running_card_running">実行中です</string>
+    <string name="home_screen_running_card_not_running">起動していません</string>
+    <string name="home_screen_running_card_description">端末内の音声を取得して、文字起こしをするアプリです。</string>
+    <string name="home_screen_running_card_button_stop">終了</string>
+    <string name="home_screen_running_card_button_start">開始する</string>
+    <string name="home_screen_language_setting">言語の設定</string>
+    <string name="home_screen_menu_add_model">モデルを追加する</string>
+    <string name="home_screen_menu_add_model_description">他のモデルをダウンロードして追加できます</string>
+    <string name="home_screen_menu_change_model">モデルを変更する</string>
+    <string name="home_screen_menu_change_model_description">追加したモデルを切り替えます</string>
+    <string name="home_screen_other">そのほか</string>
+    <string name="home_screen_menu_license">ライセンス</string>
+    <string name="home_screen_menu_license_description">thx</string>
+    <string name="home_screen_menu_source_code">ソースコードを見る</string>
+    <string name="home_screen_menu_source_code_description">GitHub から見ることが出来ます</string>
+    <string name="home_screen_toast_model_added">追加しました</string>
+    <string name="lisence_screen_title">ライセンス</string>
+    <string name="vosk_caption_service_notification_channel_name">文字起こしサービス実行中</string>
+    <string name="vosk_caption_service_notification_title">文字起こしサービス</string>
+    <string name="vosk_caption_service_notification_description">端末内の音声を収集して、文字起こしをしています。</string>
+</resources>

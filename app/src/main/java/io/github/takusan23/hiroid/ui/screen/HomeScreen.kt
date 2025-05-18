@@ -82,7 +82,7 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
                     context = context,
                     inputStream = context.contentResolver.openInputStream(uri)!!
                 )
-                Toast.makeText(context, "追加しました", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.home_screen_toast_model_added), Toast.LENGTH_SHORT).show()
             }
         }
     )
@@ -129,17 +129,17 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
                     modifier = Modifier
                         .padding(10.dp)
                         .fillMaxWidth(),
-                    title = "言語の設定"
+                    title = stringResource(R.string.home_screen_language_setting)
                 ) {
                     MenuItem(
-                        title = "モデルを追加する",
-                        description = "他のモデルをダウンロードして追加できます",
+                        title = stringResource(R.string.home_screen_menu_add_model),
+                        description = stringResource(R.string.home_screen_menu_add_model_description),
                         iconResId = R.drawable.language_24px,
                         onClick = { filePicker.launch(arrayOf("application/zip")) }
                     )
                     MenuItem(
-                        title = "モデルを変更する",
-                        description = "追加したモデルを切り替えます",
+                        title = stringResource(R.string.home_screen_menu_change_model),
+                        description = stringResource(R.string.home_screen_menu_change_model_description),
                         iconResId = R.drawable.language_24px,
                         onClick = { isShowModelBottomSheet.value = true }
                     )
@@ -151,17 +151,17 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
                     modifier = Modifier
                         .padding(10.dp)
                         .fillMaxWidth(),
-                    title = "そのほか"
+                    title = stringResource(R.string.home_screen_other)
                 ) {
                     MenuItem(
-                        title = "ライセンス",
-                        description = "thx",
+                        title = stringResource(R.string.home_screen_menu_license),
+                        description = stringResource(R.string.home_screen_menu_license_description),
                         iconResId = R.drawable.data_object_24px,
                         onClick = { onNavigate(Route.License) }
                     )
                     MenuItem(
-                        title = "ソースコードを見る",
-                        description = "GitHub から見ることが出来ます",
+                        title = stringResource(R.string.home_screen_menu_source_code),
+                        description = stringResource(R.string.home_screen_menu_source_code_description),
                         iconResId = R.drawable.open_in_browser_24px,
                         onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, GitHubUrl.toUri())) }
                     )
@@ -184,24 +184,24 @@ private fun RunningCard(
         ) {
 
             Text(
-                text = if (isRunning) "実行中です" else "起動していません",
+                text = if (isRunning) stringResource(R.string.home_screen_running_card_running) else stringResource(R.string.home_screen_running_card_not_running),
                 fontSize = 20.sp
             )
-            Text(text = "端末内の音声を取得して、文字起こしをするアプリです。")
+            Text(text = stringResource(R.string.home_screen_running_card_description))
 
             if (isRunning) {
                 OutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onClick
                 ) {
-                    Text(text = "終了")
+                    Text(text = stringResource(R.string.home_screen_running_card_button_stop))
                 }
             } else {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onClick
                 ) {
-                    Text(text = "開始する")
+                    Text(text = stringResource(R.string.home_screen_running_card_button_start))
                 }
             }
         }

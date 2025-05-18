@@ -185,13 +185,13 @@ class VoskCaptionService : LifecycleService(), SavedStateRegistryOwner {
         val notificationManager = NotificationManagerCompat.from(this)
         if (notificationManager.getNotificationChannel(CHANNEL_ID) == null) {
             val channel = NotificationChannelCompat.Builder(CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW).apply {
-                setName("文字起こしサービス実行中")
+                setName(getString(R.string.vosk_caption_service_notification_channel_name))
             }.build()
             notificationManager.createNotificationChannel(channel)
         }
         val notification = NotificationCompat.Builder(this, CHANNEL_ID).apply {
-            setContentTitle("文字起こしサービス")
-            setContentText("端末内の音声を収集して、文字起こしをしています。")
+            setContentTitle(getString(R.string.vosk_caption_service_notification_title))
+            setContentText(getString(R.string.vosk_caption_service_notification_description))
             setSmallIcon(R.drawable.ic_launcher_foreground)
         }.build()
         ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)

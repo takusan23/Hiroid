@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Hiroid</string>
+    <string name="setup_screen_title">Initial Setup</string>
+    <string name="setup_button_start">Start</string>
+    <string name="setup_button_vosk_model_card_title">Download Speech Recognition Model</string>
+    <string name="setup_button_vosk_model_card_description">Open the browser and download the model for the language you want to use. After downloading, press the button and select the downloaded model zip file.</string>
+    <string name="setup_button_vosk_model_button_open_browser">Open Browser</string>
+    <string name="setup_button_vosk_model_button_select_model">Select Downloaded Model</string>
+    <string name="setup_screen_permission_card_title">Grant Necessary Permissions</string>
+    <string name="setup_button_permission_card_description">This app requires microphone permission to capture audio being played on the device. It also needs overlay permission to display subtitles on top of the screen.</string>
+    <string name="setup_button_permission_button_record">Get Microphone Permission</string>
+    <string name="setup_button_permission_button_overlay">Overlay Permission</string>
+    <string name="home_screen_running_card_running">Running</string>
+    <string name="home_screen_running_card_not_running">Not Running</string>
+    <string name="home_screen_running_card_description">An app that transcribes audio from your device.</string>
+    <string name="home_screen_running_card_button_stop">Stop</string>
+    <string name="home_screen_running_card_button_start">Start</string>
+    <string name="home_screen_language_setting">Language Settings</string>
+    <string name="home_screen_menu_add_model">Add Model</string>
+    <string name="home_screen_menu_add_model_description">Download and add other models</string>
+    <string name="home_screen_menu_change_model">Change Model</string>
+    <string name="home_screen_menu_change_model_description">Switch between added models</string>
+    <string name="home_screen_other">Other</string>
+    <string name="home_screen_menu_license">License</string>
+    <string name="home_screen_menu_license_description">thx</string>
+    <string name="home_screen_menu_source_code">View Source Code</string>
+    <string name="home_screen_menu_source_code_description">Available on GitHub</string>
+    <string name="home_screen_toast_model_added">Added</string>
+    <string name="lisence_screen_title">License</string>
+    <string name="vosk_caption_service_notification_channel_name">Transcription service running</string>
+    <string name="vosk_caption_service_notification_title">Transcription service</string>
+    <string name="vosk_caption_service_notification_description">Audio on the device is being collected and transcribed.</string>
 </resources>
