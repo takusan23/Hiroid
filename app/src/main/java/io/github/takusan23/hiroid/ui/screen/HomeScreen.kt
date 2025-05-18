@@ -43,6 +43,7 @@ import io.github.takusan23.hiroid.ui.component.ModelSelectBottomSheet
 import kotlinx.coroutines.launch
 
 private val GitHubUrl = "https://github.com/takusan23/Hiroid"
+private val PrivacyPolicyUrl = "https://takusan.negitoro.dev/pages/hiroid_privacy_policy/"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,6 +159,11 @@ fun HomeScreen(onNavigate: (Route) -> Unit) {
                         description = stringResource(R.string.home_screen_menu_license_description),
                         iconResId = R.drawable.data_object_24px,
                         onClick = { onNavigate(Route.License) }
+                    )
+                    MenuItem(
+                        title = stringResource(R.string.home_screen_menu_privacy_policy),
+                        iconResId = R.drawable.open_in_browser_24px,
+                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, PrivacyPolicyUrl.toUri())) }
                     )
                     MenuItem(
                         title = stringResource(R.string.home_screen_menu_source_code),

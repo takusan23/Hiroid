@@ -7,7 +7,7 @@
     <string name="setup_button_vosk_model_button_open_browser">Open Browser</string>
     <string name="setup_button_vosk_model_button_select_model">Select Downloaded Model</string>
     <string name="setup_screen_permission_card_title">Grant Necessary Permissions</string>
-    <string name="setup_button_permission_card_description">This app requires microphone permission to capture audio being played on the device. It also needs overlay permission to display subtitles on top of the screen.</string>
+    <string name="setup_button_permission_card_description">This app requires recording permission to obtain the audio being played on the device. It also requires overlay permission to display subtitles on top of the screen.\n(It uses overlay permission to display subtitles, not picture-in-picture. The reason is that there is only one picture-in-picture on the screen, so if you display subtitles with this, other video apps or calling apps will not be able to use picture-in-picture. It is used to allow simultaneous use.)</string>
     <string name="setup_button_permission_button_record">Get Microphone Permission</string>
     <string name="setup_button_permission_button_overlay">Overlay Permission</string>
     <string name="home_screen_running_card_running">Running</string>
@@ -31,4 +31,5 @@
     <string name="vosk_caption_service_notification_title">Transcription service</string>
     <string name="vosk_caption_service_notification_description">Audio on the device is being collected and transcribed.</string>
     <string name="model_select_bottomsheet_title">Model Selection</string>
+    <string name="home_screen_menu_privacy_policy">Privacy Policy</string>
 </resources>

@@ -8,7 +8,7 @@
     <string name="setup_button_vosk_model_button_open_browser">ブラウザを開く</string>
     <string name="setup_button_vosk_model_button_select_model">ダウンロードしたモデルを選ぶ</string>
     <string name="setup_screen_permission_card_title">必要な権限の付与</string>
-    <string name="setup_button_permission_card_description">このアプリでは、端末内で再生されている音声の取得のために、録音権限が必要です。また、画面の上に字幕を表示するため、オーバーレイ権限も必要です。</string>
+    <string name="setup_button_permission_card_description">このアプリでは、端末内で再生されている音声の取得のために、録音権限が必要です。また、画面の上に字幕を表示するため、オーバーレイ権限も必要です。\n（ピクチャーインピクチャーではなく、オーバーレイ権限を利用して表示します。理由は、ピクチャーインピクチャーは画面に一つだけなので、これで字幕を表示すると、他の動画アプリや通話アプリがピクチャーインピクチャーが利用できなくなります。同時に利用できるようにするために利用しています。）</string>
     <string name="setup_button_permission_button_record">録音権限の取得</string>
     <string name="setup_button_permission_button_overlay">オーバーレイ権限</string>
     <string name="home_screen_running_card_running">実行中です</string>
@@ -32,4 +32,5 @@
     <string name="vosk_caption_service_notification_title">文字起こしサービス</string>
     <string name="vosk_caption_service_notification_description">端末内の音声を収集して、文字起こしをしています。</string>
     <string name="model_select_bottomsheet_title">モデルの選択</string>
+    <string name="home_screen_menu_privacy_policy">プライバシーポリシー</string>
 </resources>
