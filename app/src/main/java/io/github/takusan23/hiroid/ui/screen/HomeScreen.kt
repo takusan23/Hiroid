@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,6 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import io.github.takusan23.hiroid.R
 import io.github.takusan23.hiroid.VoskCaptionService
 import io.github.takusan23.hiroid.tool.VoskModelTool
@@ -44,10 +48,18 @@ private val GitHubUrl = "https://github.com/takusan23/Hiroid"
 @Composable
 fun HomeScreen(onNavigate: (Route) -> Unit) {
     val context = LocalContext.current
+    val lifecycle = LocalLifecycleOwner.current
     val scope = rememberCoroutineScope()
 
-    // MediaProjection
+    // サービスの実行状態
     val isServiceRunning = remember { mutableStateOf(VoskCaptionService.isServiceRunning(context)) }
+    LaunchedEffect(key1 = Unit) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            isServiceRunning.value = VoskCaptionService.isServiceRunning(context)
+        }
+    }
+
+    // MediaProjection
     val mediaProjectionManager = remember { context.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager }
     val mediaProjectionRequest = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
