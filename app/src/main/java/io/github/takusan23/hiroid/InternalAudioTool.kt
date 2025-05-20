@@ -9,8 +9,10 @@ import android.media.AudioPlaybackCaptureConfiguration
 import android.media.AudioRecord
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 
 /** 端末内の音声を MediaProjection を使って録音する */
@@ -31,15 +33,18 @@ object InternalAudioTool {
         )
 
         // MediaProjection
-        val mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, resultData).apply {
-            // 画面録画中のコールバック
-            registerCallback(object : MediaProjection.Callback() {
-                // MediaProjection 終了時
-                override fun onStop() {
-                    super.onStop()
-                    cancel()
-                }
-            }, null)
+        // メインスレッドで registerCallback() する
+        val mediaProjection = withContext(Dispatchers.Main) {
+            mediaProjectionManager.getMediaProjection(resultCode, resultData).apply {
+                // 画面録画中のコールバック
+                registerCallback(object : MediaProjection.Callback() {
+                    // MediaProjection 終了時
+                    override fun onStop() {
+                        super.onStop()
+                        cancel()
+                    }
+                }, null)
+            }
         }
         // 内部音声取るのに使う
         val playbackConfig = AudioPlaybackCaptureConfiguration.Builder(mediaProjection).apply {
