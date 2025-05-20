@@ -4,7 +4,7 @@
     <string name="setup_screen_title">初期設定</string>
     <string name="setup_button_start">はじめる</string>
     <string name="setup_button_vosk_model_card_title">音声認識のモデルをダウンロードしてください</string>
-    <string name="setup_button_vosk_model_card_description">ブラウザを開き、使いたい言語のモデルをダウンロードしてください。ダウンロードしたらボタンを押して、ダウンロードしたモデルの zip を選んでください。</string>
+    <string name="setup_button_vosk_model_card_description">ブラウザを開き、使いたい言語のモデルをダウンロードしてください。多分スマホで動かすには small モデルを選ぶ必要があります。ダウンロードしたらボタンを押して、ダウンロードしたモデルの zip を選んでください。</string>
     <string name="setup_button_vosk_model_button_open_browser">ブラウザを開く</string>
     <string name="setup_button_vosk_model_button_select_model">ダウンロードしたモデルを選ぶ</string>
     <string name="setup_screen_permission_card_title">必要な権限の付与</string>
