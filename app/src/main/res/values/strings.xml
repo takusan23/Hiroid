@@ -32,4 +32,6 @@
     <string name="vosk_caption_service_notification_description">Audio on the device is being collected and transcribed.</string>
     <string name="model_select_bottomsheet_title">Model Selection</string>
     <string name="home_screen_menu_privacy_policy">Privacy Policy</string>
+    <string name="setup_screen_setup_guide_title">There is a video recording of the initial setup procedure. Please check it out if you don\'t understand the instructions or if it doesn\'t work.</string>
+    <string name="setup_screen_setup_guide_button">Open video (YouTube)</string>
 </resources>

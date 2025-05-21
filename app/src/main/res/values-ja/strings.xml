@@ -33,4 +33,6 @@
     <string name="vosk_caption_service_notification_description">端末内の音声を収集して、文字起こしをしています。</string>
     <string name="model_select_bottomsheet_title">モデルの選択</string>
     <string name="home_screen_menu_privacy_policy">プライバシーポリシー</string>
+    <string name="setup_screen_setup_guide_title">初期設定の手順を録画した動画があります。説明がよく分からない場合や、動かない場合は確認してください。</string>
+    <string name="setup_screen_setup_guide_button">動画を開く（YouTube）</string>
 </resources>

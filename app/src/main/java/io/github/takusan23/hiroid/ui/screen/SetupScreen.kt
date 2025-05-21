@@ -44,6 +44,7 @@ import io.github.takusan23.hiroid.tool.VoskModelTool
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+private const val GuideVideoLink = "https://www.youtube.com/watch?v=_hJWepY7fro"
 private const val ModelDownloadLink = "https://alphacephei.com/vosk/models"
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +59,14 @@ fun SetupScreen(onComplete: () -> Unit) {
         }
     ) { innerPadding ->
         LazyColumn(contentPadding = innerPadding) {
+
+            item {
+                GuideVideoCard(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth()
+                )
+            }
 
             item {
                 PermissionCard(
@@ -92,6 +101,28 @@ fun SetupScreen(onComplete: () -> Unit) {
                         Text(text = stringResource(R.string.setup_button_start))
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GuideVideoCard(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    OutlinedCard(modifier = modifier) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+
+            Text(
+                text = stringResource(R.string.setup_screen_setup_guide_title),
+                fontSize = 20.sp
+            )
+
+            Button(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, GuideVideoLink.toUri())) }) {
+                Text(text = stringResource(R.string.setup_screen_setup_guide_button))
             }
         }
     }

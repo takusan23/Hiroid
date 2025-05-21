@@ -52,6 +52,7 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import io.github.takusan23.hiroid.tool.DataStoreKey
+import io.github.takusan23.hiroid.tool.InternalAudioTool
 import io.github.takusan23.hiroid.tool.VoskModelTool
 import io.github.takusan23.hiroid.tool.dataStore
 import io.github.takusan23.hiroid.ui.theme.HiroidTheme

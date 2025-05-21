@@ -1,4 +1,4 @@
-package io.github.takusan23.hiroid
+package io.github.takusan23.hiroid.tool
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,7 @@ import android.media.AudioPlaybackCaptureConfiguration
 import android.media.AudioRecord
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
+import io.github.takusan23.hiroid.VoskAndroid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.callbackFlow
